@@ -1,0 +1,2 @@
+# BanQuery
+MCPE - BanQuery Plugin
