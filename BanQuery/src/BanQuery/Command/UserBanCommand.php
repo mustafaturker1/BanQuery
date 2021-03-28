@@ -19,9 +19,9 @@ class UserBanCommand extends PluginCommand
     }
 
     /**
-     * @var CommandSender $sender
-     * @var string $commandLabel
-     * @var array $args
+     * @param CommandSender $sender
+     * @param string $commandLabel
+     * @param array $args
      * @return bool|mixed
      */
 
