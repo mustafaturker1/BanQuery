@@ -11,7 +11,7 @@ class BanOptionForm extends MenuForm
 {
     public function __construct()
     {
-        parent::__construct("Ban Form", "\n", [
+        parent::__construct("Ban Option Form", "\n", [
             new MenuOption(TextFormat::WHITE."Ban"),
             new MenuOption(TextFormat::WHITE."Unban"),
             new MenuOption(TextFormat::WHITE."All Unban")
