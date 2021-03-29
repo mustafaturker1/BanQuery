@@ -26,16 +26,14 @@ class BanQuery extends PluginBase{
         $commandMap->register("ban", new UserBanCommand($this));
     }
 
-    public function onDisable()
-    {
+    public function onDisable(){
         $this->config->save();
     }
 
     /**
      * @return mixed
      */
-    public function getConfigData(): ?Config
-    {
+    public function getConfigData(): ?Config{
         return $this->config;
     }
 }

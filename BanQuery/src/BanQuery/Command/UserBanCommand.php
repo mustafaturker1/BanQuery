@@ -4,18 +4,26 @@ namespace BanQuery\Command;
 
 use BanQuery\BanQuery;
 use BanQuery\Forms\BanOptionForm;
+use BanQuery\Text\Text;
 use pocketmine\command\{PluginCommand, CommandSender};
 use pocketmine\Player;
 use pocketmine\utils\TextFormat;
 
-class UserBanCommand extends PluginCommand
-{
+class UserBanCommand extends PluginCommand{
 
-    public function __construct(BanQuery $plugin)
-    {
+    /** @var BanQuery */
+    private $plugin;
+
+    /**
+     * UserBanCommand constructor.
+     * @param BanQuery $plugin
+     */
+    public function __construct(BanQuery $plugin){
         parent::__construct("ban", $plugin);
         $this->setDescription("Ban players command!");
         $this->setPermission("ban.command");
+
+        $this->plugin = $plugin;
     }
 
     /**
@@ -24,17 +32,18 @@ class UserBanCommand extends PluginCommand
      * @param array $args
      * @return bool|mixed
      */
+    public function execute(CommandSender $sender, string $commandLabel, array $args){
+        $config = $this->plugin->getConfigData();
+        $text = new Text($this->plugin);
 
-    public function execute(CommandSender $sender, string $commandLabel, array $args)
-    {
         if (!$sender instanceof Player){
             return false;
         }
         if (!$sender->hasPermission("ban.command")){
-            $sender->sendMessage(TextFormat::RED . "You have not permission!");
+            $sender->sendMessage($text->convertCodeInTheText($config->get("No-Permission-Message"), $sender));
             return false;
         }
-        $sender->sendForm(new BanOptionForm());
+        $sender->sendForm(new BanOptionForm($this->plugin));
         return true;
     }
 }
