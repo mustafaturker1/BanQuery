@@ -4,7 +4,7 @@ namespace BanQuery\Provider;
 
 use BanQuery\BanQuery;
 use PDO;
-use pocketmine\Player;
+use pocketmine\utils\TextFormat as C;
 
 class MySQL{
 
@@ -18,7 +18,7 @@ class MySQL{
         "Hostname" => "localhost",
         "Databasename" => "banlist",
         "Username" => "root",
-        "Password" => "12345678"
+        "Password" => ""
     ];
 
     /**
@@ -27,24 +27,48 @@ class MySQL{
      */
     public function __construct(BanQuery $plugin){
         $this->plugin = $plugin;
+
         try {
             $this->mysql = new PDO("mysql:host=" . self::MYSQL_INFO["Hostname"] . ";dbname=" . self::MYSQL_INFO["Databasename"] . ";", self::MYSQL_INFO["Username"], self::MYSQL_INFO["Password"]);
-            $plugin->getLogger()->info("PDO Connection Successful!");
+            $this->plugin->getLogger()->info(C::GREEN . "MySQL Connection Successful!");
         }catch (\PDOException $e){
-            $plugin->getLogger()->info("Connection failed!\n\n" . $e->getMessage());
+            $this->plugin->getLogger()->alert("MySQL Connection failed!\n\n" . $e->getMessage());
+            $this->plugin->getServer()->getPluginManager()->disablePlugin($this->plugin);
         }
     }
 
     /**
-     * @param Player $user
+     * @param string $user
+     * @param string $reason
+     * @param string $day
+     * @param bool $unlimited
      * @return bool
      */
-    public function addBanUser(Player $user): bool{
+    public function addBanUser(string $user, string $reason, string $day, bool $unlimited = false): bool{
         // Board Name: bannedlist
-        $data = $this->mysql->prepare("INSERT INTO bannedlist SET ban_name=?");
-        $control = $data->execute([
-            strtolower($user->getName())
-        ]);
+        $control = null;
+        date_default_timezone_set('Europe/Istanbul');
+
+        if ($unlimited){
+            $data = $this->mysql->prepare("INSERT INTO bannedlist SET ban_name=?, ban_reason=?, ban_time=?, unban_time=?, ban_status=?");
+            $control = $data->execute([
+                strtolower($user),
+                $reason,
+                date("d.m.Y H:i:s"),
+                null,
+                1
+            ]);
+        }else {
+            $unban = strtotime("+{$day} Day");
+            $data = $this->mysql->prepare("INSERT INTO bannedlist SET ban_name=?, ban_reason=?, ban_time=?, unban_time=?, ban_status=?");
+            $control = $data->execute([
+                strtolower($user),
+                $reason,
+                date("d.m.Y H:i:s"),
+                date("d.m.Y H:i:s", $unban),
+                0
+            ]);
+        }
 
         if ($control){
             return true;
@@ -54,14 +78,14 @@ class MySQL{
     }
 
     /**
-     * @param Player $user
+     * @param string $user
      * @return bool
      */
-    public function deleteBanUser(Player $user): bool{
+    public function deleteBanUser(string $user): bool{
         // Board Name: bannedlist
         $data = $this->mysql->prepare("DELETE FROM bannedlist WHERE ban_name=?");
         $control = $data->execute([
-            strtolower($user->getName())
+            strtolower($user)
         ]);
 
         if ($control){
@@ -72,14 +96,14 @@ class MySQL{
     }
 
     /**
-     * @param Player $user
+     * @param string $user
      * @return mixed
      */
-    public function listBanUser(Player $user): mixed{
+    public function listBanUser(string $user): mixed{
         // Board Name: bannedlist
         $data = $this->mysql->prepare("SELECT * FROM bannedlist WHERE ban_name=?");
         $data->execute([
-            strtolower($user->getName())
+            strtolower($user)
         ]);
 
         return $data->fetch(PDO::FETCH_ASSOC);
@@ -94,5 +118,23 @@ class MySQL{
         $data->execute();
 
         return $data->fetch(PDO::FETCH_ASSOC);
+    }
+
+    /**
+     * @param string $user
+     * @return bool
+     */
+    public function isBanned(string $user): bool{
+        // Board Name: bannedlist
+        $data = $this->mysql->prepare("SELECT * FROM bannedlist WHERE ban_name=?");
+        $control = $data->execute([
+            strtolower($user)
+        ]);
+
+        if ($control){
+            return true;
+        }else{
+            return false;
+        }
     }
 }

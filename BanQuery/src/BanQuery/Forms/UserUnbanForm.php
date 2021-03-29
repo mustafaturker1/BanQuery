@@ -4,6 +4,8 @@ namespace BanQuery\Forms;
 
 use BanQuery\BanQuery;
 use dktapps\pmforms\ModalForm;
+use pocketmine\Player;
+use pocketmine\utils\TextFormat as C;
 
 class UserUnbanForm extends ModalForm{
 
@@ -18,14 +20,18 @@ class UserUnbanForm extends ModalForm{
         $this->plugin = $plugin;
 
         parent::__construct(
-            "",
-            "",
+            C::BOLD . C::DARK_GRAY . "Unban",
+            "\n",
 
-            function (): void{
-
+            function (Player $player, bool $selected): void{
+                if ($selected){
+                    $player->sendForm(new UserUnbanSearchForm($this->plugin));
+                }else{
+                    $player->sendForm(new UserUnbanAllForm($this->plugin));
+                }
             },
-            "",
-            ""
+            "Search Banned Player",
+            "All Banned Players"
         );
     }
 }

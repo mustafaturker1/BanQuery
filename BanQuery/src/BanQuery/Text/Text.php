@@ -14,8 +14,10 @@ class Text{
      * @var string[]
      */
     private $codes = [
-        "{player}",
-        "&"
+        "{user}",
+        "&",
+        "{line}",
+        "{admin}"
     ];
 
     public function __construct(BanQuery $plugin){
@@ -24,11 +26,12 @@ class Text{
 
     /**
      * @param string $text
-     * @param Player $player
-     * @return string|string[]
+     * @param Player $admin
+     * @param string|null $player
+     * @return string
      */
-    public function convertCodeInTheText(string $text, Player $player){
+    public function convertCodeInTheText(string $text, Player $admin, string $player = null): string{
         $config = $this->plugin->getConfigData();
-        return str_replace($this->codes, [$player->getName(), "§"], $config->get("Prefix")) . str_replace($this->codes, [$player->getName(), "§"], $text);
+        return str_replace($this->codes, [$player, "§", "\n", $admin->getName()], $config->get("Prefix")) . str_replace($this->codes, [$player, "§", "\n", $admin->getName()], $text);
     }
 }

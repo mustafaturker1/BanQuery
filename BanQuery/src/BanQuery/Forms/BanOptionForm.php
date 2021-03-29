@@ -24,18 +24,19 @@ class BanOptionForm extends MenuForm{
             C::BOLD . C::DARK_GRAY . "Ban Option Form",
             "\n",
             [
-                new MenuOption(C::BOLD . C::DARK_GRAY . "Ban" . C::RESET),
-                new MenuOption(C::BOLD . C::DARK_GRAY . "Unban" . C::RESET),
-                new MenuOption(C::BOLD . C::DARK_GRAY . "Ban List" . C::RESET)
+                new MenuOption(C::DARK_GRAY . "Ban" . C::RESET),
+                new MenuOption(C::DARK_GRAY . "Unban" . C::RESET),
+                new MenuOption(C::DARK_GRAY . "Ban List" . C::RESET)
             ],
 
-            function (Player $player, ?int $response): void {
-                switch (C::clean($this->getOption($response)->getText())) {
-                    case "Ban":
-                        $player->sendForm(new UserBanForm($this->plugin));
-                        break;
-                    case "Unban":
-                        $player->sendForm(new UserUnbanForm($this->plugin));
+            function (Player $player, int $selected): void {
+                $button = C::clean($this->getOption($selected)->getText());
+
+                if ($button == "Ban"){
+                    $player->sendForm(new UserBanForm($this->plugin));
+                }
+                if ($button == "Unban"){
+                    $player->sendForm(new UserUnbanForm($this->plugin));
                 }
             });
     }
