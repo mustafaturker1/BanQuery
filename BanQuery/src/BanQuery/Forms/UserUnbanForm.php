@@ -21,7 +21,7 @@ class UserUnbanForm extends ModalForm{
 
         parent::__construct(
             C::BOLD . C::DARK_GRAY . "Unban",
-            "\n",
+            "Select one of the search actions\n",
 
             function (Player $player, bool $selected): void{
                 if ($selected){

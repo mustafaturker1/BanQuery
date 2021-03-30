@@ -22,8 +22,9 @@ class UserUnbanAllForm extends MenuForm{
         $this->plugin = $plugin;
         $mysql = $this->plugin->getMySQL();
         $option = [];
-        foreach ($mysql->listAllBanUser() as $users){
-            $option[] = new MenuOption(C::BOLD . C::DARK_GRAY . $users['ban_name'] . C::RESET);
+        $data = $mysql->listAllBanUser();
+        foreach ($data as $users){
+            $option[] = new MenuOption(C::DARK_GRAY . $users['ban_name'] . C::RESET);
         }
 
         parent::__construct(

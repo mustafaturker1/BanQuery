@@ -40,7 +40,7 @@ class UserBanCommand extends PluginCommand{
             return false;
         }
         if (!$sender->hasPermission("ban.command")){
-            $sender->sendMessage($text->convertCodeInTheText($config->get("No-Permission-Message"), $sender));
+            $sender->sendMessage($text->convertCodeInTheText($config->get("No-Permission-Message"), $sender->getName()));
             return false;
         }
         $sender->sendForm(new BanOptionForm($this->plugin));

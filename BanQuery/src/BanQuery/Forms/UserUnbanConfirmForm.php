@@ -27,7 +27,7 @@ class UserUnbanConfirmForm extends ModalForm{
 
        parent::__construct(
            C::BOLD . C::DARK_GRAY . "Unban - {$user}",
-           "Do you confirm to ban the user?",
+           "Do you confirm to unban the user?",
 
            function (Player $player, bool $selected): void{
                $mysql = $this->plugin->getMySQL();
@@ -36,7 +36,7 @@ class UserUnbanConfirmForm extends ModalForm{
 
                 if ($selected){
                     if ($mysql->deleteBanUser($this->user)){
-                        $player->sendMessage($text->convertCodeInTheText($config->get("Unban-Successfully-Message"), $player, $this->user));
+                        $player->sendMessage($text->convertCodeInTheText($config->get("Unban-Successfully-Message"), $player->getName(), $this->user));
                     }
                 }
            },

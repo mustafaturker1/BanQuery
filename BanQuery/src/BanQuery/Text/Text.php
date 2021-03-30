@@ -3,7 +3,6 @@
 namespace BanQuery\Text;
 
 use BanQuery\BanQuery;
-use pocketmine\Player;
 
 class Text{
 
@@ -17,8 +16,13 @@ class Text{
         "{user}",
         "&",
         "{line}",
-        "{admin}"
+        "{admin}",
+        "{reason}",
+        "{prefix}"
     ];
+
+    /** @var string */
+    private $prefix = "&";
 
     public function __construct(BanQuery $plugin){
         $this->plugin = $plugin;
@@ -26,12 +30,14 @@ class Text{
 
     /**
      * @param string $text
-     * @param Player $admin
+     * @param string $admin
+     * @param string|null $reason
      * @param string|null $player
      * @return string
      */
-    public function convertCodeInTheText(string $text, Player $admin, string $player = null): string{
+    public function convertCodeInTheText(string $text, string $admin, string $reason = null, string $player = null): string{
         $config = $this->plugin->getConfigData();
-        return str_replace($this->codes, [$player, "§", "\n", $admin->getName()], $config->get("Prefix")) . str_replace($this->codes, [$player, "§", "\n", $admin->getName()], $text);
+        $prefix = str_replace($this->prefix, "§", $config->get("Prefix"));
+        return str_replace($this->codes, [$player, "§", "\n", $admin, $reason, $prefix], $text);
     }
 }

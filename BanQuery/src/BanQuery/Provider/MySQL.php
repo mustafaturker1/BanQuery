@@ -38,35 +38,40 @@ class MySQL{
     }
 
     /**
+     * @param string $admin
      * @param string $user
      * @param string $reason
      * @param string $day
      * @param bool $unlimited
      * @return bool
      */
-    public function addBanUser(string $user, string $reason, string $day, bool $unlimited = false): bool{
+    public function addBanUser(string $admin, string $user, string $reason, string $day, bool $unlimited = false): bool{
         // Board Name: bannedlist
         $control = null;
-        date_default_timezone_set('Europe/Istanbul');
+        // date_default_timezone_set('Europe/Istanbul');
+        $unban = strtotime("+{$day} Day");
+        $date = date("Y-m-d H:i:s");
+        $time = date("Y-m-d H:i:s", $unban);
 
         if ($unlimited){
-            $data = $this->mysql->prepare("INSERT INTO bannedlist SET ban_name=?, ban_reason=?, ban_time=?, unban_time=?, ban_status=?");
+            $data = $this->mysql->prepare("INSERT INTO bannedlist SET ban_name=?, ban_reason=?, ban_time=?, unban_time=?, ban_status=?, ban_admin=?");
             $control = $data->execute([
                 strtolower($user),
                 $reason,
-                date("d.m.Y H:i:s"),
+                $date,
                 null,
-                1
+                1,
+                $admin
             ]);
         }else {
-            $unban = strtotime("+{$day} Day");
-            $data = $this->mysql->prepare("INSERT INTO bannedlist SET ban_name=?, ban_reason=?, ban_time=?, unban_time=?, ban_status=?");
+            $data = $this->mysql->prepare("INSERT INTO bannedlist SET ban_name=?, ban_reason=?, ban_time=?, unban_time=?, ban_status=?, ban_admin=?");
             $control = $data->execute([
                 strtolower($user),
                 $reason,
-                date("d.m.Y H:i:s"),
-                date("d.m.Y H:i:s", $unban),
-                0
+                $date,
+                $time,
+                0,
+                $admin
             ]);
         }
 
@@ -97,9 +102,8 @@ class MySQL{
 
     /**
      * @param string $user
-     * @return mixed
      */
-    public function listBanUser(string $user): mixed{
+    public function listBanUser(string $user){
         // Board Name: bannedlist
         $data = $this->mysql->prepare("SELECT * FROM bannedlist WHERE ban_name=?");
         $data->execute([
@@ -109,15 +113,12 @@ class MySQL{
         return $data->fetch(PDO::FETCH_ASSOC);
     }
 
-    /**
-     * @return mixed
-     */
-    public function listAllBanUser(): mixed{
+    public function listAllBanUser(){
         // Board Name: bannedlist
         $data = $this->mysql->prepare("SELECT * FROM bannedlist");
         $data->execute();
 
-        return $data->fetch(PDO::FETCH_ASSOC);
+        return $data->fetchAll(PDO::FETCH_ASSOC);
     }
 
     /**
@@ -127,11 +128,11 @@ class MySQL{
     public function isBanned(string $user): bool{
         // Board Name: bannedlist
         $data = $this->mysql->prepare("SELECT * FROM bannedlist WHERE ban_name=?");
-        $control = $data->execute([
+        $data->execute([
             strtolower($user)
         ]);
 
-        if ($control){
+        if ($data->rowCount() > 0){
             return true;
         }else{
             return false;

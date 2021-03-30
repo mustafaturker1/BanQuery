@@ -2,6 +2,7 @@
 
 namespace BanQuery;
 
+use BanQuery\Listener\BanQueryListener;
 use BanQuery\Provider\MySQL;
 use BanQuery\Command\UserBanCommand;
 use pocketmine\plugin\PluginBase;
@@ -26,6 +27,7 @@ class BanQuery extends PluginBase{
         $commandMap->unregister($commandMap->getCommand("ban-ip"));
         $commandMap->unregister($commandMap->getCommand("banlist"));
         $commandMap->register("ban", new UserBanCommand($this));
+        $this->getServer()->getPluginManager()->registerEvents(new BanQueryListener($this), $this);
     }
 
     /**

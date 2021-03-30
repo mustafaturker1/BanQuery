@@ -2,18 +2,22 @@
 # {user} = Banned user name
 # {line} = Bottom line
 # {admin} = Admin name
+# {reason} = Banned Reason
+# {prefix} = Prefix
 
 # Settings
+Prefix: "&l&6BAN&r > "
 Ban-Broadcast: true # true or false
 
 
 
 # Messages
-Prefix: "&l&6BAN&r > "
-No-Permission-Message: "&7You have not permission!"
-Ban-Successfully-Message: "&7{user} has been successfully banned!"
-Ban-Broadcast-Message: "&6{user} &7Banned by &6{admin}!"
-User-Not-Found-Message: "&7{user} not found!"
-Unban-Successfully-Message: "&7{user} has been successfully unban!"
-Player-Same-User-Message: "&7You can't ban yourself!"
-Non-Numeric-Day-Message: "&7Enter a numeric value!"
+No-Permission-Message: "{prefix}&7You have not permission!"
+Ban-Successfully-Message: "{prefix}&7{user} has been successfully banned!"
+Ban-Broadcast-Message: "{prefix}&6{user} &7Banned by &6{admin}!"
+User-Not-Found-Message: "{prefix}&7{user} not found!"
+Unban-Successfully-Message: "{prefix}&7{user} has been successfully unban!"
+Player-Same-User-Message: "{prefix}&7You can't ban yourself!"
+Non-Numeric-Day-Message: "{prefix}&7Enter a numeric value!"
+Ban-Kick-Message: "&7BANNED!{line}&6{reason}"
+Negative-Numeric-Day-Message: "{prefix}&7Do not enter a negative numerical value!"

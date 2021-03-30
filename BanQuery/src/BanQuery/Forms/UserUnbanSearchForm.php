@@ -36,11 +36,12 @@ class UserUnbanSearchForm extends CustomForm{
                 $mysql = $this->plugin->getMySQL();
                 $text = new Text($this->plugin);
                 $config = $this->plugin->getConfigData();
+                $isBanned = $mysql->isBanned($search);
 
-                if ($mysql->isBanned($search)){
-                    $player->sendForm(new UserUnbanConfirmForm($this->plugin, $search));
+                if (!$isBanned){
+                    $player->sendMessage($text->convertCodeInTheText($config->get("User-Not-Found-Message"), $player->getName(), $search));
                 }else{
-                    $player->sendMessage($text->convertCodeInTheText($config->get("User-Not-Found-Message"), $player, $search));
+                    $player->sendForm(new UserUnbanConfirmForm($this->plugin, $search));
                 }
             }
         );
