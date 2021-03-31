@@ -42,10 +42,10 @@ class UserBanForm extends CustomForm{
                 $config = $this->plugin->getConfigData();
                 $enum = null;
 
-                if ($dropdown == $player->getName()){
-                    $player->sendMessage($text->convertCodeInTheText($config->get("Player-Same-User-Message"), $player));
+                /* if ($dropdown == $player->getName()){
+                    $player->sendMessage($text->convertCodeInTheText($config->get("Player-Same-User-Message"), $player->getName()));
                     return;
-                }
+                } */
                 if ($toggle){
                     $enum = true;
                 }else{
@@ -64,10 +64,10 @@ class UserBanForm extends CustomForm{
                     }
                 }
                 if ($mysql->addBanUser($player->getName(), $dropdown, $reason, $day, $enum)){
-                    $player->sendMessage($text->convertCodeInTheText($config->get("Ban-Successfully-Message"), $player->getName(), $dropdown));
+                    $player->sendMessage($text->convertCodeInTheText($config->get("Ban-Successfully-Message"), $player->getName(), $reason, $dropdown));
                 }
                 if ($config->get("Ban-Broadcast") == true){
-                    $this->plugin->getServer()->broadcastMessage($text->convertCodeInTheText($config->get("Ban-Broadcast-Message"), $player->getName(), $dropdown));
+                    $this->plugin->getServer()->broadcastMessage($text->convertCodeInTheText($config->get("Ban-Broadcast-Message"), $player->getName(), $reason, $dropdown));
                 }
                 $info = $mysql->listBanUser($player->getName());
                 $banned = $this->plugin->getServer()->getPlayerExact($dropdown);

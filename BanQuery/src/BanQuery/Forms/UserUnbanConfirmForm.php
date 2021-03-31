@@ -36,7 +36,7 @@ class UserUnbanConfirmForm extends ModalForm{
 
                 if ($selected){
                     if ($mysql->deleteBanUser($this->user)){
-                        $player->sendMessage($text->convertCodeInTheText($config->get("Unban-Successfully-Message"), $player->getName(), $this->user));
+                        $player->sendMessage($text->convertCodeInTheText($config->get("Unban-Successfully-Message"), $player->getName(), null, $this->user));
                     }
                 }
            },

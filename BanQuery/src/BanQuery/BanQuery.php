@@ -26,6 +26,7 @@ class BanQuery extends PluginBase{
         $commandMap->unregister($commandMap->getCommand("unban"));
         $commandMap->unregister($commandMap->getCommand("ban-ip"));
         $commandMap->unregister($commandMap->getCommand("banlist"));
+        $commandMap->unregister($commandMap->getCommand("unban-ip"));
         $commandMap->register("ban", new UserBanCommand($this));
         $this->getServer()->getPluginManager()->registerEvents(new BanQueryListener($this), $this);
     }
