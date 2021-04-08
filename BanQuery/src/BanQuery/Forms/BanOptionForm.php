@@ -24,8 +24,8 @@ class BanOptionForm extends MenuForm{
             C::BOLD . C::DARK_GRAY . "Ban Option Form",
             "\n",
             [
-                new MenuOption(C::DARK_GRAY . "Ban" . C::RESET),
-                new MenuOption(C::DARK_GRAY . "Unban" . C::RESET)
+                new MenuOption(C::DARK_GRAY . "BAN" . C::RESET),
+                new MenuOption(C::DARK_GRAY . "UNBAN" . C::RESET)
             ],
 
             function (Player $player, int $selected): void {
