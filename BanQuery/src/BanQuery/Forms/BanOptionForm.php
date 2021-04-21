@@ -31,10 +31,10 @@ class BanOptionForm extends MenuForm{
             function (Player $player, int $selected): void {
                 $button = C::clean($this->getOption($selected)->getText());
 
-                if ($button == "Ban"){
+                if ($button == "BAN"){
                     $player->sendForm(new UserBanForm($this->plugin));
                 }
-                if ($button == "Unban"){
+                if ($button == "UNBAN"){
                     $player->sendForm(new UserUnbanForm($this->plugin));
                 }
             });
