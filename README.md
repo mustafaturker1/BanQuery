@@ -1,3 +1,3 @@
 # BanQuery
 MCPE - BanQuery Plugin
-- BanQuery Website coming soon
+- https://github.com/bleacherss/banquery-website
