@@ -42,10 +42,10 @@ class UserBanForm extends CustomForm{
                 $config = $this->plugin->getConfigData();
                 $enum = null;
 
-                /* if ($dropdown == $player->getName()){
+                if ($dropdown == $player->getName()){
                     $player->sendMessage($text->convertCodeInTheText($config->get("Player-Same-User-Message"), $player->getName()));
                     return;
-                } */
+                }
                 if ($toggle){
                     $enum = true;
                 }else{
