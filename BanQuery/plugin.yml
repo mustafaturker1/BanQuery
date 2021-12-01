@@ -2,4 +2,6 @@ name: BanQuery
 main: BanQuery\BanQuery
 version: 1.0
 api: 3.14.0
-author: ByAlperenS & mustafaturker1
+authors:
+- mustafaturker1
+- ByAlperenS
