@@ -1,3 +1,3 @@
 # BanQuery
 MCPE - BanQuery Plugin
-- BanQuery Website coming soon
+- PocketMine API4 support to be added.
